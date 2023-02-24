@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Fragment.ChatFragment">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/frg_chat_til_search"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:startIconDrawable="@drawable/baseline_search_24">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Find"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/frg_chat_rcv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="60dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp">
+
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+</RelativeLayout>

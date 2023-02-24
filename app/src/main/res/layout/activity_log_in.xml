@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LogInActivity"
+    android:padding="20dp">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/login_til_userName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_userName"
+            android:imeOptions="actionNext"
+            android:textColorHighlight="@color/teal_200" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_below="@+id/login_til_userName"
+        android:id="@+id/login_til_pass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:passwordToggleEnabled="true"
+        android:layout_marginTop="10dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_pass"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:textColorHighlight="@color/teal_200" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    <Button
+        android:id="@+id/login_btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/log_in"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
+        android:background="@color/teal_200"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:layout_below="@+id/login_til_pass"/>
+
+    <LinearLayout
+        android:id="@+id/login_ln_sign_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/login_btn_login"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dont_have_email"
+            android:textSize="12sp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_up"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/teal_200"
+            android:layout_marginLeft="5dp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

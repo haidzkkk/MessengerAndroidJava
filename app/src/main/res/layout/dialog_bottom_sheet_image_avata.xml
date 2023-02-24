@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dialog_bottom_sheet_imgavt_thuvien"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="Mở thư viện"
+        android:textSize="15sp"
+        android:textColor="@color/black"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/gray"/>
+
+    <TextView
+        android:id="@+id/dialog_bottom_sheet_imgavt_cammera"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="Mở camera"
+        android:textSize="15sp"
+        android:gravity="center_vertical"
+        android:textColor="@color/black"
+        android:paddingLeft="20dp"/>
+</LinearLayout>

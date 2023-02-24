@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LogInActivity"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_above="@+id/signup_til_username">
+
+        <EditText
+            android:id="@+id/signup_edt_firstname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/signup_firstName"
+            android:layout_margin="10dp"
+            android:layout_weight="1"/>
+
+        <EditText
+            android:id="@+id/signup_edt_lastname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/signup_lastName"
+            android:layout_margin="10dp"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/signup_til_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/signup_username"
+            android:imeOptions="actionNext"
+            android:textColorHighlight="@color/teal_200" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/signup_til_pass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:passwordToggleEnabled="true"
+        android:layout_below="@+id/signup_til_username">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/signup_pass"
+            android:inputType="textPassword"
+            android:imeOptions="actionNext"
+            android:textColorHighlight="@color/teal_200" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/signup_til_email"
+        android:layout_below="@+id/signup_til_pass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/signup_email"
+            android:imeOptions="actionDone"
+            android:textColorHighlight="@color/teal_200" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/signup_btn_signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/sigmup_signup"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
+        android:background="@color/teal_200"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:layout_below="@+id/signup_til_email"/>
+
+
+</RelativeLayout>

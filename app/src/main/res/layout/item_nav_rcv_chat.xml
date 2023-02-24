@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    app:cardCornerRadius="10dp"
+    android:id="@+id/item_nav_rcv_chat_cv_main">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/item_nav_rcv_chat_cv_icon"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_margin="10dp"
+            android:backgroundTint="#EDEDED"
+            app:cardCornerRadius="10dp">
+
+            <ImageView
+                android:id="@+id/item_nav_rcv_chat_img_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+              />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/item_nav_rcv_chat_tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/item_nav_rcv_chat_cv_icon"
+            android:text=""
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/item_nav_rcv_chat_cv_index"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="20dp"
+            android:backgroundTint="#FF1100"
+            app:cardCornerRadius="300dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/item_nav_rcv_chat_tv_index"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold"
+             />
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
+
