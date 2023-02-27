@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.example.messenger.Adapter.MessageAdaper;
 import com.example.messenger.ClassTool.ConvertImg;
 import com.example.messenger.ClassTool.MyApplication;
+import com.example.messenger.DataMessagingNotification.FcmNotificationsSender;
 import com.example.messenger.Fragment.BottomSheetInfomationUserFagement;
 import com.example.messenger.Model.HistoryMess;
 import com.example.messenger.Model.Messages;
@@ -45,6 +46,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceIdReceiver;
+import com.google.firebase.iid.internal.FirebaseInstanceIdInternal;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -122,6 +126,21 @@ public class RoomChatActivity extends AppCompatActivity {
                 moThuVien();
             }
         });
+
+//        FirebaseMessaging.getInstance().subscribeToTopic("all");
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (task.isSuccessful()) {
+                            String  token = task.getResult();
+                            Log.e("tokenFire", token);
+                        }
+
+                    }
+                });
+
 
     }
 
@@ -414,17 +433,30 @@ public class RoomChatActivity extends AppCompatActivity {
     }
 
     private void sendNotification(String name, String text) {
-        Notification notification = new NotificationCompat.Builder(this, MyApplication.CHANEL_ID)
-                .setContentTitle(name)
-                .setContentText(text)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .build();
 
-        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        managerCompat.notify(1, notification);
+//     Notification nghịch
+//        Notification notification = new NotificationCompat.Builder(this, MyApplication.CHANEL_ID)
+//                .setContentTitle(name)
+//                .setContentText(text)
+//                .setSmallIcon(R.mipmap.ic_launcher)
+//                .build();
+//
+//        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+//            return;
+//        }
+//        managerCompat.notify(1, notification);
+
+
+
+//      send data to firebase
+//        String token = "e43bJWQrQtele8dYs_Tznh:APA91bEURbsp_2HTEJyJTaHuirdEg8EQz1-k76hNLQvD7IdWBHjScO2CK9y6cB31j0yTYVyUfbgKz_XPEkc_wZpAuFRljiUH9dJDyL7cMZsHdMi4MjnNkVBPqsZdwGWr4XRXSkucjtbE";
+//
+////        FcmNotificationsSender fcmNotificationsSender = new FcmNotificationsSender("/topics/all",
+//        FcmNotificationsSender fcmNotificationsSender = new FcmNotificationsSender(token,
+//                name, text,
+//                getApplicationContext(), RoomChatActivity.this);
+//        fcmNotificationsSender.SendNotifications();
     }
 
 }

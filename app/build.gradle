@@ -43,4 +43,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging'
 
     implementation 'io.github.ParkSangGwon:tedpermission-normal:3.3.0' // request permission
+
+    implementation("com.android.volley:volley:1.2.1")
 }
