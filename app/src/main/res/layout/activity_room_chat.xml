@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RoomChatActivity"
-    android:background="@color/gray">
+    android:background="@color/gray"
+    tools:context=".RoomChatActivity">
 
     <RelativeLayout
         android:id="@+id/room_chat_layout_top"
@@ -17,55 +17,62 @@
             android:id="@+id/room_chat_img_back"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/baseline_arrow_back_ios_24"
-            android:layout_margin="5dp"/>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/room_chat_cv_avt"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_toRightOf="@+id/room_chat_img_back"
             android:layout_margin="5dp"
-            app:cardCornerRadius="300dp">
+            android:src="@drawable/baseline_arrow_back_ios_24" />
 
-            <ImageView
-                android:id="@+id/room_chat_img_avt"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"/>
-
-        </androidx.cardview.widget.CardView>
-
-        <TextView
-            android:id="@+id/room_chat_tv_name"
+        <RelativeLayout
+            android:id="@+id/room_chat_rl_you"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_toRightOf="@+id/room_chat_cv_avt"
-            android:text=""
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:layout_toRightOf="@+id/room_chat_img_back">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/room_chat_cv_avt"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
+                app:cardCornerRadius="300dp">
+
+                <ImageView
+                    android:id="@+id/room_chat_img_avt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop" />
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/room_chat_tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_toRightOf="@+id/room_chat_cv_avt"
+                android:text=""
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
 
 
         <ImageView
             android:id="@+id/room_chat_img_call"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/baseline_call_24"
+            android:layout_margin="5dp"
             android:layout_toLeftOf="@+id/room_chat_img_videocam"
-            android:layout_margin="5dp"/>
+            android:src="@drawable/baseline_call_24" />
 
         <ImageView
             android:id="@+id/room_chat_img_videocam"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/baseline_videocam_24"
             android:layout_alignParentRight="true"
-            android:layout_margin="5dp"/>
+            android:layout_margin="5dp"
+            android:src="@drawable/baseline_videocam_24" />
 
     </RelativeLayout>
 
@@ -92,7 +99,7 @@
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:layout_margin="5dp"
-            android:src="@drawable/baseline_camera_alt_24"/>
+            android:src="@drawable/baseline_camera_alt_24" />
 
         <ImageView
             android:id="@+id/room_chat_img_photo"
@@ -101,26 +108,26 @@
             android:layout_centerVertical="true"
             android:layout_margin="5dp"
             android:layout_toRightOf="@+id/room_chat_img_camera"
-            android:src="@drawable/baseline_photo_24"/>
-        
+            android:src="@drawable/baseline_photo_24" />
+
         <EditText
             android:id="@+id/room_chat_edt_message"
             android:layout_width="250dp"
             android:layout_height="40dp"
-            android:hint="Aa"
             android:layout_centerVertical="true"
             android:layout_margin="5dp"
-            android:layout_toRightOf="@+id/room_chat_img_photo"/>
+            android:layout_toRightOf="@+id/room_chat_img_photo"
+            android:hint="Aa" />
 
         <ImageView
             android:id="@+id/room_chat_img_send"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
-            android:src="@drawable/baseline_send_24"
             android:layout_centerVertical="true"
-            android:layout_margin="5dp"/>
-        
+            android:layout_margin="5dp"
+            android:src="@drawable/baseline_send_24" />
+
 
     </RelativeLayout>
 

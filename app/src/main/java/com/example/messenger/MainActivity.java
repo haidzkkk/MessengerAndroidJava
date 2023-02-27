@@ -6,18 +6,22 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     ListNavAdapter navAdapter;
     ImageView imgAvtHeader, imgSettingHeader;
     TextView tvNameHeader, tvTitleToolbar;
+    RelativeLayout lnMainHeader;
 
     ProgressDialog progressDialog;
 
@@ -78,39 +83,15 @@ public class MainActivity extends AppCompatActivity {
 
         setUpdataUser();
 
-        tvNameHeader.setOnClickListener(v -> {
+        checkRequestPermistionNotification();
+
+        lnMainHeader.setOnClickListener(v -> {
             detailUser();
         });
 
-        for (int i = 1; i < 25; i++) {
-            UserFont userFont = new UserFont("Do Hai Quan", "dohaiquan" + i, "");
-
-            reference.child("UserFont").child(userFont.getUserName()).setValue(userFont);
-        }
     }
 
-    private void getTestEverythink() {
-//        HashMap<String, Object> objectHashMap = new HashMap<>();
-        List<User> list = new ArrayList<>();
-        reference.child("User").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot ds : snapshot.getChildren()) {
-//                    String key = ds.getKey();
-                    User u = ds.getValue(User.class);
-//                    objectHashMap.put(key, u);
-                    list.add(u);
-                }
 
-                Log.e("dsfasdsa", list.toString());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
 
 
     private void initUI() {
@@ -128,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
         // nav
         imgAvtHeader = navigation.getHeaderView(0).findViewById(R.id.header_img_avt);
-        imgSettingHeader = navigation.getHeaderView(0).findViewById(R.id.header_img_setting);
+        lnMainHeader = navigation.getHeaderView(0).findViewById(R.id.header_rl_main);
         tvNameHeader = navigation.getHeaderView(0).findViewById(R.id.header_tv_name);
         rcvNav = findViewById(R.id.main_nav_rcv_chat);
         navAdapter = new ListNavAdapter();
@@ -182,7 +163,18 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                User userTemp = snapshot.getValue(User.class);
 
+                if (userTemp.getUserName() != null) {                /// check user có phải là user ảo không (user ảo là userfont nhưng userDeitail lại k có thông tin)
+
+                    if (userTemp.getUserName().equals(strUsername)) {
+                        user = snapshot.getValue(User.class);
+                        Log.e("usser_Main", user.toString());
+                        tvNameHeader.setText(user.getName());
+                        imgAvtHeader.setImageBitmap(ConvertImg.convertBaseStringToBitmap(user.getImg()));
+                    }
+
+                }
             }
 
             @Override
@@ -350,18 +342,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == BottomSheetInfomationUserFagement.CODE_PERMISSION_READ_STORAGE) {   // nếu requestCode bằng với code xin quyền kia thì đã cho thì check action
+        if (requestCode == BottomSheetInfomationUserFagement.CODE_PERMISSION_READ_STORAGE) {   // nếu requestCode bằng với code da xin quyền kia thì đã cho thì check action
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(MainActivity.this, "Oke123", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(MainActivity.this, "Vui lòng cho phép truy cập thư viện", Toast.LENGTH_SHORT).show();
             }
+        } else if (requestCode == 789) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            }
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void checkRequestPermistionNotification(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                String[] permission = {Manifest.permission.POST_NOTIFICATIONS};
+                requestPermissions(permission, 789);
+            }
+        }
     }
-
 }

@@ -1,11 +1,14 @@
 package com.example.messenger.Fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,6 +19,8 @@ import android.view.ViewGroup;
 
 import com.example.messenger.AbtractClass.LoadMoreScrollListenner;
 import com.example.messenger.Adapter.MessHistoriAdapter;
+import com.example.messenger.ClassTool.RecycleviewItemTouchHelper;
+import com.example.messenger.Interface.ItemTouchHeplerListenner;
 import com.example.messenger.MainActivity;
 import com.example.messenger.Model.HistoryMess;
 import com.example.messenger.Model.User;
@@ -33,12 +38,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ChatFragment extends Fragment {
+public class ChatFragment extends Fragment implements ItemTouchHeplerListenner {
 
     public ChatFragment() {
         // Required empty public constructor
     }
-
 
 
     private String myUserName;
@@ -109,6 +113,36 @@ public class ChatFragment extends Fragment {
 //                return isCurentPage;
 //            }
 //        });
+
+        ItemTouchHelper.SimpleCallback simpleCallback = new RecycleviewItemTouchHelper(
+                0, ItemTouchHelper.LEFT, this);
+        new ItemTouchHelper(simpleCallback).attachToRecyclerView(rcv);
+    }
+
+    //get data item đã đc vuốt để xử lý
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder) {
+        HistoryMess mess = listMess.get(viewHolder.getAdapterPosition() -1);
+        int indexDelete = viewHolder.getAdapterPosition() ;
+
+        Log.e("index",indexDelete + " | list size: " + listMess.size() );
+        new AlertDialog.Builder(activity)
+                .setTitle("Bạn có chắc muốn xóa cuộc trò chuyện này không ?")
+                .setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        reference.child("User").child(myUserName).child("historiMes")
+                                .child(mess.getIdMess()).removeValue();
+                    }
+                })
+                .setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        adapter.notifyItemChanged(indexDelete);
+                    }
+                })
+                .setCancelable(false)
+                .show();
     }
 
     private void getListMessHistory() {
@@ -132,31 +166,80 @@ public class ChatFragment extends Fragment {
         Query query = reference.child("User").child(myUserName)
                 .child("historiMes").orderByChild("timeLastSent");
 
-        query.addValueEventListener(new ValueEventListener() {
+//        query.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                listMess.clear();
+//                for (DataSnapshot ds : snapshot.getChildren()) {
+//                    HistoryMess mess = ds.getValue(HistoryMess.class);
+//                    if (mess != null) {
+//                        listMess.add(0,mess);
+//                    }
+//                }
+//
+//                    adapter.notifyDataSetChanged();
+//                    Log.e("ListHistotio2", listMess.toString());
+////                }
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//            }
+//        });
+
+        query.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                listMess.clear();
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    HistoryMess mess = ds.getValue(HistoryMess.class);
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                HistoryMess mess = snapshot.getValue(HistoryMess.class);
                     if (mess != null) {
                         listMess.add(0,mess);
-                    }
-                }
-
-//// logic khi load more  sai vcl :v
-//                if (listMessTemp.size() == 0) {
-//                    isCurentPage = true;
-//                } else {
-//                    isLoading = false;
 
                     adapter.notifyDataSetChanged();
                     Log.e("ListHistotio2", listMess.toString());
-//                }
+                    }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                HistoryMess mess = snapshot.getValue(HistoryMess.class);
+                if (mess == null && listMess.isEmpty()) {
+                    return;
+                }
+
+                for (int i =0 ; i< listMess.size(); i++){
+                    if (listMess.get(i).getIdMess().equals(mess.getIdMess())){
+                        listMess.remove(i);
+                        listMess.add(0, mess);
+                        adapter.notifyDataSetChanged();
+                        Log.e("ListHistotio2", listMess.toString());
+                    }
+                }
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                HistoryMess mess = snapshot.getValue(HistoryMess.class);
+                if (mess == null && listMess.isEmpty()) {
+                    return;
+                }
+
+                for (int i =0 ; i< listMess.size(); i++){
+                    if (listMess.get(i).getIdMess().equals(mess.getIdMess())){
+                        listMess.remove(i);
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
@@ -167,7 +250,14 @@ public class ChatFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 listUserFont.clear();
                 for (DataSnapshot ds : snapshot.getChildren()) {
-                    listUserFont.add(ds.getValue(UserFont.class));
+                    UserFont userFont = ds.getValue(UserFont.class);
+
+                    if (userFont == null | userFont.getUserName() == null) return;
+
+                    if (userFont.getUserName().equals(myUserName)){     // neu la minh thi cho len dau
+                        listUserFont.add(0, userFont);
+                    }else listUserFont.add(userFont);
+
                     adapter.notifyDataSetChanged();
                 }
             }
@@ -179,5 +269,9 @@ public class ChatFragment extends Fragment {
         });
     }
 
-
+    @Override
+    public void onStop() {
+        super.onStop();
+        reference.onDisconnect();
+    }
 }

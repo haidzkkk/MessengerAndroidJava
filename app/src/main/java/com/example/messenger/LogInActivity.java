@@ -48,7 +48,7 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String strUserName = tilUserName.getEditText().getText().toString().trim();
-                String strPass = tilPass.getEditText().getText().toString().trim();
+                String strPass = tilPass.getEditText().getText().toString().trim() +"";
                 dialog.show();
 
                 getData(strUserName, strPass);
@@ -79,7 +79,7 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
-                if (user == null || !user.getPass().equals(pass)){
+                if (user == null || user.getPass() == null || !user.getPass().equals(pass)){
                     Toast.makeText(LogInActivity.this, R.string.login_faile, Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                     return;

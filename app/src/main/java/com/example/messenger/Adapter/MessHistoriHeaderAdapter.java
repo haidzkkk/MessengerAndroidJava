@@ -69,7 +69,12 @@ public class MessHistoriHeaderAdapter extends RecyclerView.Adapter<MessHistoriHe
             @Override
             public void onClick(View view) {
                 // go to message
-                checkMessWithYou(user.getUserName());
+                if (holder.getAdapterPosition() != 0)   // nếu là 0 thì đó là chính mình thì k thể nt đc
+                {
+                    checkMessWithYou(user.getUserName());
+                }else {
+                    //
+                }
             }
         });
 

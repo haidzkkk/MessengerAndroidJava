@@ -83,7 +83,7 @@ public class BottomSheetInfomationUserFagement extends BottomSheetDialogFragment
         imgAvt = view.findViewById(R.id.detail_user_img_avt);
         btnEdit = view.findViewById(R.id.detail_user_btn_edit);
         btnLogout = view.findViewById(R.id.detail_user_btn_logout);
-        activity = (MainActivity) getActivity();
+        activity = getActivity();
         activity.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         return view;
@@ -139,6 +139,10 @@ public class BottomSheetInfomationUserFagement extends BottomSheetDialogFragment
                 }
 
             });
+        }else {
+            imgAvt.setOnClickListener(v -> {
+                moZoomAnh(user.getImg());
+            });
         }
     }
 
@@ -153,6 +157,17 @@ public class BottomSheetInfomationUserFagement extends BottomSheetDialogFragment
         editor.commit();
 
 
+    }
+
+    private void moZoomAnh(String strImg) {
+        Dialog dialog = new Dialog(activity);
+        dialog.setContentView(R.layout.dialog_zoom_image);
+        dialog.show();
+
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        ImageView imageView = dialog.findViewById(R.id.dialog_zoom_image);
+        imageView.setImageBitmap(ConvertImg.convertBaseStringToBitmap(strImg));
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

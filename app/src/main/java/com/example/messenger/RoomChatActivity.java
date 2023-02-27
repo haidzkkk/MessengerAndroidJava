@@ -4,10 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -20,14 +25,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.messenger.Adapter.MessageAdaper;
 import com.example.messenger.ClassTool.ConvertImg;
+import com.example.messenger.ClassTool.MyApplication;
 import com.example.messenger.Fragment.BottomSheetInfomationUserFagement;
 import com.example.messenger.Model.HistoryMess;
 import com.example.messenger.Model.Messages;
+import com.example.messenger.Model.User;
 import com.example.messenger.Model.UserFont;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -64,6 +72,7 @@ public class RoomChatActivity extends AppCompatActivity {
     List<String> listMember;
     MessageAdaper adaper;
     LinearLayoutManager linearLayoutManager;
+    RelativeLayout rlYou;
 
     private String myUserName;
     private String idWithUser;
@@ -79,6 +88,12 @@ public class RoomChatActivity extends AppCompatActivity {
         initUI();
         setUpdata();
 
+        rlYou.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                detailUser();
+            }
+        });
 
         imgSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,6 +122,7 @@ public class RoomChatActivity extends AppCompatActivity {
                 moThuVien();
             }
         });
+
     }
 
 
@@ -139,6 +155,7 @@ public class RoomChatActivity extends AppCompatActivity {
         imgPhoto = findViewById(R.id.room_chat_img_photo);
         imgSend = findViewById(R.id.room_chat_img_send);
         tvName = findViewById(R.id.room_chat_tv_name);
+        rlYou = findViewById(R.id.room_chat_rl_you);
         edtMessage = findViewById(R.id.room_chat_edt_message);
         rcv = findViewById(R.id.room_chat_rcv);
 
@@ -148,6 +165,33 @@ public class RoomChatActivity extends AppCompatActivity {
 
         adaper = new MessageAdaper(this);
         linearLayoutManager = new LinearLayoutManager(this);
+
+
+    }
+
+    private void detailUser() {
+
+        reference.child("User").child(idWithUser).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                if (user == null){
+                    return;
+                }
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("user", user);
+                bundle.putBoolean("myAccount", false);
+
+                BottomSheetInfomationUserFagement bottomSheet = new BottomSheetInfomationUserFagement();
+                bottomSheet.setArguments(bundle);
+                bottomSheet.show(getSupportFragmentManager(), bottomSheet.getTag());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
     }
@@ -319,7 +363,7 @@ public class RoomChatActivity extends AppCompatActivity {
                                 Log.e("memenrer", listMember.toString());
                             }
 
-                            if (listMember.size() == 0){        // nếu mà tìm member trong historiMes mà k có, thì chỉ có historiMes mới nên add chay thứ đã có :v
+                            if (listMember.size() == 0) {        // nếu mà tìm member trong historiMes mà k có, thì chỉ có historiMes mới nên add chay thứ đã có :v
                                 listMember.add(myUserName);
                                 listMember.add(idWithUser);
                             }
@@ -364,7 +408,23 @@ public class RoomChatActivity extends AppCompatActivity {
                 reference.child("User").child(listMember.get(i)).child("historiMes").child(idRoomMess)
                         .setValue(sentMessData);
             }
+
+            sendNotification(listMember.get(0), list.get(0).getText());
         }
+    }
+
+    private void sendNotification(String name, String text) {
+        Notification notification = new NotificationCompat.Builder(this, MyApplication.CHANEL_ID)
+                .setContentTitle(name)
+                .setContentText(text)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .build();
+
+        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        managerCompat.notify(1, notification);
     }
 
 }

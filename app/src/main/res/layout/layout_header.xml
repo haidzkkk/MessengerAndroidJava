@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/header_rl_main">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/header_carview_img"
@@ -29,14 +30,5 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:text=""/>
-
-    <ImageView
-        android:id="@+id/header_img_setting"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_margin="10dp"
-        android:src="@drawable/baseline_settings_24"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"/>
 
 </RelativeLayout>

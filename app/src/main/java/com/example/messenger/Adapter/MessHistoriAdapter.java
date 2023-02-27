@@ -115,7 +115,6 @@ public class MessHistoriAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             getUserFont(mHoler,mess);
 
 
-
             // chuyển timeLastSent từ số unix về dạng Date
             String timeLastSent = "";
             Long unixTime = Long.parseLong(mess.getTimeLastSent());         // số unixTime giúp firebase sắp xếp thời gian
@@ -132,8 +131,8 @@ public class MessHistoriAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             // check ai gửi
             boolean isYouSent = mess.getMessWithUser().equalsIgnoreCase(mess.getIdUserLastSent());
             if (isYouSent)
-                mHoler.tvMess.setText(mess.getMessLastSent() + "  " + timeLastSent);
-            else mHoler.tvMess.setText("Ban: " + mess.getMessLastSent() + "  " + timeLastSent);
+                mHoler.tvMess.setText(mess.getMessLastSent() + "       " + timeLastSent);
+            else mHoler.tvMess.setText("Me: " + mess.getMessLastSent() + "       " + timeLastSent);
 
             // check đã xem chưa
             if (mess.getSeen()){
@@ -186,7 +185,7 @@ public class MessHistoriAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public class BodyViewHoler extends RecyclerView.ViewHolder {
         TextView tvName, tvMess;
         ImageView imgAvt;
-        RelativeLayout rlMain;
+        public RelativeLayout rlMain;
         CardView cvSeen;
 
         public BodyViewHoler(@NonNull View itemView) {
@@ -236,6 +235,10 @@ public class MessHistoriAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         this.context = null;
     }
 
+    public void removeItem (int position){
+        listBody.remove(position);
+        notifyItemRemoved(position);
+    }
     public void addFooterLoading(){
         isLoading = true;
         listBody.add(new HistoryMess());
